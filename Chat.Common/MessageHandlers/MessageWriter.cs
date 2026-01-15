@@ -16,7 +16,7 @@ public class MessageWriter(Stream stream) : MessageHandler, IDisposable
 
         byte[] bytes = Encoding.UTF8.GetBytes(output);
         int bytes_length = bytes.Length;
-        if (bytes_length > 10000) throw new TooLongMessageException("Too long  message");
+        if (bytes_length > MaxMessageLen) throw new TooLongMessageException("Too long  message");
 
 
         byte[] header = new byte[4];
