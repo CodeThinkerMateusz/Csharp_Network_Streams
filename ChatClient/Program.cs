@@ -155,7 +155,23 @@ class Program
 
     static async Task<TcpClient?> Connect(string host, int port, IProgress<string> progress)
     {
-        // TODO
-        throw new NotImplementedException();
+        var client = new TcpClient();
+        try
+        {
+            await client.ConnectAsync(host, port).WaitAsync(TimeSpan.FromSeconds(3));
+            progress.Report($"Connected host({host}) to port({port})");
+            return client;
+
+        }
+        catch(TimeoutException)
+        {
+            progress.Report("Conection timout - didnt  connect in 3  seconds");
+            return null;
+        }
+        catch(Exception e)
+        {
+            progress.Report($"Connection failed: {e.Message}");
+            return null;
+        }
     }
 }
